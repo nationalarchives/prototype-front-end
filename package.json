@@ -3,14 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/jest": "24.0.12",
     "@types/node": "12.0.0",
     "@types/react": "16.8.17",
     "@types/react-dom": "16.8.4",
+    "@types/react-router-dom": "^4.3.3",
+    "@types/uuid": "^3.4.4",
+    "amazon-cognito-identity-js": "^3.0.12",
+    "aws-sdk": "^2.451.0",
+    "axios": "^0.18.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-file-drop": "^0.2.8",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
-    "typescript": "3.4.5"
+    "typescript": "3.4.5",
+    "uuid4": "^1.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "1.17.0"
   }
 }
