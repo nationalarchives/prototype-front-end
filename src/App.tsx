@@ -1,26 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { getCurrentUser } from "./utils";
+import { SignIn } from "./components/SignIn";
+import { Upload } from "./components/Upload";
+import { CreateCollection } from "./components/CreateCollection";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  RouteProps,
+  RouteComponentProps
+} from "react-router-dom";
 
-const App: React.FC = () => {
+interface IPrivateRouteProps extends RouteProps {
+  component: React.FunctionComponent<RouteComponentProps>;
+}
+
+const App: React.FunctionComponent = () => {
+  const PrivateRoute: React.FunctionComponent<IPrivateRouteProps> = ({
+    component: Component,
+    ...rest
+  }) => {
+    return (
+      <Route
+        {...rest}
+        render={props =>
+          getCurrentUser() ? (
+            <Component {...props} />
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/signin",
+                state: { from: props.location }
+              }}
+            />
+          )
+        }
+      />
+    );
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Route path="/" exact={true} component={SignIn} />
+        <Route path="/signin" component={SignIn} />
+        <PrivateRoute path="/create-collection" component={CreateCollection} />
+        <PrivateRoute path="/upload/:id" component={Upload} />
+      </Router>
     </div>
   );
-}
+};
 
 export default App;
