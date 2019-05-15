@@ -3,8 +3,6 @@ import {
   ICognitoUserPoolData,
   CognitoUser
 } from "amazon-cognito-identity-js";
-import AWS, { Credentials } from "aws-sdk";
-import { reject } from "q";
 
 export type RequestHeader = { [index: string]: string };
 
@@ -21,7 +19,7 @@ export const getCurrentUser: () => CognitoUser | null = () => {
 };
 
 export const getAuthorisationHeaders: () => Promise<RequestHeader> = () => {
-  return new Promise<RequestHeader>(resolve => {
+  return new Promise<RequestHeader>((resolve, reject) => {
     const user: CognitoUser | null = getCurrentUser();
     if (user !== null) {
       user.getSession(function(_: any, result: any) {
@@ -44,23 +42,4 @@ export const getIdentityPoolId: () => string = () => {
 
 export const getCognitoLoginId: () => string = () => {
   return "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_6Mn0M2i9C";
-};
-
-export const makeAuthenticatedRequest: (
-  request: () => void
-) => void = request => {
-  const userPool: CognitoUserPool = getUserPool();
-  const cognitoUser: CognitoUser | null = userPool.getCurrentUser();
-
-  if (cognitoUser !== null) {
-    cognitoUser.getSession(function(err: any, result: any) {
-      if (result) {
-        if (AWS.config.credentials instanceof Credentials) {
-          AWS.config.credentials.refresh(function() {
-            request();
-          });
-        }
-      }
-    });
-  }
 };

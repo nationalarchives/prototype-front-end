@@ -1,13 +1,20 @@
 import * as React from "react";
 import { generateHash } from "../utils";
 import { IFileInfo, IWebkitEntry, IReader } from "../utils/files";
+import { IUpdateFile } from "./Upload";
+import uuid4 from "uuid";
 
 interface IFileUploadAreaProps {
-  onFilesProcessed: (fileInfo: IFileInfo[]) => void;
+  onFilesProcessed: (fileInfo: IUpdateFile[]) => void;
   setIsLoading: React.Dispatch<boolean>;
 }
 
 const FileUploadArea: React.FunctionComponent<IFileUploadAreaProps> = props => {
+  const [dataTransferItems, setDataTransferItems]: [
+    IWebkitEntry[],
+    React.Dispatch<IWebkitEntry[]>
+  ] = React.useState<IWebkitEntry[]>([]);
+
   React.useEffect(() => {
     async function getFiles() {
       if (dataTransferItems.length !== 0) {
@@ -16,17 +23,22 @@ const FileUploadArea: React.FunctionComponent<IFileUploadAreaProps> = props => {
           const allFiles: IFileInfo[] = await getAllFiles(item, []);
           allFileInfo = allFileInfo.concat(allFiles);
         }
-        props.onFilesProcessed(allFileInfo);
+
+        const updateFiles: IUpdateFile[] = allFileInfo.map(fileInfo => ({
+          id: uuid4(),
+          checksum: fileInfo.shaHash,
+          size: fileInfo.file.size.toString(),
+          path: fileInfo.entry.fullPath,
+          lastModifiedDate: fileInfo.file.lastModified.toString(),
+          file: fileInfo.file
+        }));
+        props.onFilesProcessed(updateFiles);
         props.setIsLoading(false);
       }
     }
     getFiles();
+    setDataTransferItems([]);
   });
-
-  const [dataTransferItems, setDataTransferItems]: [
-    IWebkitEntry[],
-    React.Dispatch<IWebkitEntry[]>
-  ] = React.useState<IWebkitEntry[]>([]);
 
   const [isDragging, setIsDragging]: [
     boolean,

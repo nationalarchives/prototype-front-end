@@ -1,17 +1,17 @@
 import * as React from "react";
-import { IFileInfo } from "../utils/files";
 import uuid4 from "uuid";
+import { IUpdateFile } from "./Upload";
 
 interface IFileInfoTableProps {
-  fileInfo: IFileInfo[];
+  fileUpdate: IUpdateFile[];
   isLoading: boolean;
 }
 
 const FileInfoTable: React.FunctionComponent<IFileInfoTableProps> = props => {
-  const { fileInfo, isLoading } = props;
+  const { fileUpdate, isLoading } = props;
   return (
     <>
-      {(fileInfo.length > 0 || isLoading) && (
+      {(fileUpdate.length > 0 || isLoading) && (
         <div id="fileInformation" key={uuid4()}>
           <span>{"Filename"}</span>
           <span>{"Checksum"}</span>
@@ -21,13 +21,13 @@ const FileInfoTable: React.FunctionComponent<IFileInfoTableProps> = props => {
       )}
       {isLoading && <div>Loading...</div>}
       <div id="fileProgressList">
-        {fileInfo.map(info => {
+        {fileUpdate.map(info => {
           return (
             <div id="fileInformation" key={uuid4()}>
               <span>{info.file.name}</span>
-              <span>{!info.shaHash || "done ✔"}</span>
-              <span>{info.entry.fullPath}</span>
-              <span>{info.file.size}</span>
+              <span>{!info.checksum || "done ✔"}</span>
+              <span>{info.path}</span>
+              <span>{info.size}</span>
             </div>
           );
         })}
