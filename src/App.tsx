@@ -12,9 +12,16 @@ import {
   RouteComponentProps
 } from "react-router-dom";
 
+import { ApolloProvider } from "react-apollo";
+import ApolloClient from "apollo-boost";
+
 interface IPrivateRouteProps extends RouteProps {
   component: React.FunctionComponent<RouteComponentProps>;
 }
+
+const client = new ApolloClient({
+  uri: `${process.env.GRAPHQL_SERVER}/graphql`
+});
 
 const App: React.FunctionComponent = () => {
   const PrivateRoute: React.FunctionComponent<IPrivateRouteProps> = ({
@@ -22,21 +29,23 @@ const App: React.FunctionComponent = () => {
     ...rest
   }) => {
     return (
-      <Route
-        {...rest}
-        render={props =>
-          getCurrentUser() ? (
-            <Component {...props} />
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/signin",
-                state: { from: props.location }
-              }}
-            />
-          )
-        }
-      />
+      <ApolloProvider client={client}>
+        <Route
+          {...rest}
+          render={props =>
+            getCurrentUser() ? (
+              <Component {...props} />
+            ) : (
+              <Redirect
+                to={{
+                  pathname: "/signin",
+                  state: { from: props.location }
+                }}
+              />
+            )
+          }
+        />
+      </ApolloProvider>
     );
   };
 
