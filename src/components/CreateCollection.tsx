@@ -61,7 +61,7 @@ const CreateCollection: React.FunctionComponent<
     <Mutation<ICreateCollectionResponse, ICreateCollection>
       mutation={CREATE_COLLECTION}
     >
-      {(createCollection, { data }) => (
+      {createCollection => (
         <>
           <Header
             signedIn={getCurrentUser() !== null}

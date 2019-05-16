@@ -11,6 +11,8 @@
     "@types/uuid": "^3.4.4",
     "amazon-cognito-identity-js": "^3.0.12",
     "apollo-boost": "^0.3.1",
+    "apollo-link": "^1.2.11",
+    "apollo-link-context": "^1.0.17",
     "aws-sdk": "^2.451.0",
     "graphql": "^14.3.0",
     "react": "^16.8.6",
