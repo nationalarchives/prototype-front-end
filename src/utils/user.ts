@@ -18,21 +18,17 @@ export const getCurrentUser: () => CognitoUser | null = () => {
   return getUserPool().getCurrentUser();
 };
 
-export const getAuthorisationHeaders: () => Promise<RequestHeader> = () => {
-  return new Promise<RequestHeader>((resolve, reject) => {
+export const getAuthorisationToken: () => Promise<string> = () => {
+  return new Promise<string>((resolve, reject) => {
     const user: CognitoUser | null = getCurrentUser();
     if (user !== null) {
       user.getSession(function(_: any, result: any) {
         if (result) {
-          const Authorization = result.idToken.jwtToken;
-          resolve({
-            Authorization,
-            "Content-Type": "application/json"
-          });
+          resolve(result.idToken.jwtToken);
         }
       });
     }
-    reject({});
+    reject("");
   });
 };
 

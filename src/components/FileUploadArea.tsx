@@ -15,6 +15,7 @@ const FileUploadArea: React.FunctionComponent<IFileUploadAreaProps> = props => {
     React.Dispatch<IWebkitEntry[]>
   ] = React.useState<IWebkitEntry[]>([]);
 
+  // eslint-disable-next-line
   React.useEffect(() => {
     async function getFiles() {
       if (dataTransferItems.length !== 0) {
