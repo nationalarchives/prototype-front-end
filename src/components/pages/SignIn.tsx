@@ -24,6 +24,10 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = props => {
     React.Dispatch<string>
   ] = React.useState("");
 
+  const [error, setError]: [string, React.Dispatch<string>] = React.useState<
+    string
+  >("");
+
   const updateUsername: UpdateFields = event => {
     setUsername(event.currentTarget.value);
   };
@@ -48,6 +52,7 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = props => {
     const IdentityPoolId = getIdentityPoolId();
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: function(result) {
+        setError("");
         const cognitoLoginId = getCognitoLoginId();
         AWS.config.region = "eu-west-2";
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -58,8 +63,21 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = props => {
         });
         props.history.push("/create-collection");
       },
-      onFailure: function(error: any) {
+      onFailure: function(error: { code: string }) {
         console.log(error);
+        switch (error.code) {
+          case "InvalidParameterException":
+            setError("Please fill in username and password");
+            break;
+          case "UserNotFoundException":
+            setError("User does not exist");
+            break;
+          case "NotAuthorizedException":
+            setError("Incorrect username or password");
+            break;
+          default:
+            setError("An unknow error occurred");
+        }
       }
     });
   };
@@ -67,24 +85,35 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = props => {
   return (
     <>
       <Page title="Sign In">
-        <fieldset className="govuk-fieldset">
-          <TextInput
-            value={username}
-            onChange={updateUsername}
-            id="username"
-            labelText="Username"
-            width={TextInputWidth.Quarter}
-          />
-          <TextInput
-            value={password}
-            onChange={updatePassword}
-            id="password"
-            labelText="Password"
-            width={TextInputWidth.Quarter}
-            type="password"
-          />
-          <Button text="Sign In" onClick={signIn} />
-        </fieldset>
+        <div
+          className={`govuk-form-group ${
+            error.length > 0 ? "govuk-form-group--error" : ""
+          }`}
+        >
+          <fieldset className="govuk-fieldset" aria-describedby="signin-error">
+            <TextInput
+              value={username}
+              onChange={updateUsername}
+              id="username"
+              labelText="Username"
+              width={TextInputWidth.Quarter}
+            />
+            <TextInput
+              value={password}
+              onChange={updatePassword}
+              id="password"
+              labelText="Password"
+              width={TextInputWidth.Quarter}
+              type="password"
+            />
+            <Button text="Sign In" onClick={signIn} />
+            {error.length > 0 && (
+              <span id="signin-error" className="govuk-error-message">
+                <span className="govuk-visually-hidden">Error:</span> {error}
+              </span>
+            )}
+          </fieldset>
+        </div>
       </Page>
     </>
   );
