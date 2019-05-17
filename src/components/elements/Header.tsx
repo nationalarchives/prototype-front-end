@@ -6,7 +6,7 @@ const Header: React.FunctionComponent = () => {
       <div className="govuk-header__container govuk-width-container">
         <div className="govuk-header__logo">
           <a
-            href="#"
+            href="http://localhost:3000/"
             className="govuk-header__link govuk-header__link--homepage"
           >
             <span className="govuk-header__logotype">
@@ -26,6 +26,7 @@ const Header: React.FunctionComponent = () => {
                 />
 
                 <img
+                  alt="crown logo"
                   src="/assets/images/govuk-logotype-crown.png"
                   className="govuk-header__logotype-crown-fallback-image"
                 />
@@ -36,7 +37,7 @@ const Header: React.FunctionComponent = () => {
         </div>
         <div className="govuk-header__content">
           <a
-            href="#"
+            href="http://localhost:3000"
             className="govuk-header__link govuk-header__link--service-name"
           >
             Transfer Digital Records
@@ -44,7 +45,6 @@ const Header: React.FunctionComponent = () => {
 
           <button
             type="button"
-            role="button"
             className="govuk-header__menu-button js-header-toggle"
             aria-controls="navigation"
             aria-label="Show or hide Top Level Navigation"

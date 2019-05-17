@@ -18,11 +18,11 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = props => {
   const [username, setUsername]: [
     string,
     React.Dispatch<string>
-  ] = React.useState("username");
+  ] = React.useState("");
   const [password, setPassword]: [
     string,
     React.Dispatch<string>
-  ] = React.useState("P@ssword2");
+  ] = React.useState("");
 
   const updateUsername: UpdateFields = event => {
     setUsername(event.currentTarget.value);
