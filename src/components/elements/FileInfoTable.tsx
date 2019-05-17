@@ -1,5 +1,4 @@
 import * as React from "react";
-import uuid4 from "uuid";
 import { IUpdateFile } from "../pages/Upload";
 
 interface IFileInfoTableProps {
@@ -8,31 +7,41 @@ interface IFileInfoTableProps {
 }
 
 const FileInfoTable: React.FunctionComponent<IFileInfoTableProps> = props => {
-  const { fileUpdate, isLoading } = props;
+  const { fileUpdate } = props;
   return (
-    <>
-      {(fileUpdate.length > 0 || isLoading) && (
-        <div id="fileInformation" key={uuid4()}>
-          <span>{"Filename"}</span>
-          <span>{"Checksum"}</span>
-          <span>{"Path"}</span>
-          <span>{"Size"}</span>
-        </div>
-      )}
-      {isLoading && <div>Loading...</div>}
-      <div id="fileProgressList">
-        {fileUpdate.map(info => {
+    <table className="govuk-table">
+      <caption className="govuk-table__caption">File Information</caption>
+      <thead className="govuk-table__head">
+        <tr className="govuk-table__row">
+          <th className="govuk-table__header" scope="col">
+            File Name
+          </th>
+          <th className="govuk-table__header" scope="col">
+            Checksum
+          </th>
+          <th className="govuk-table__header" scope="col">
+            Path
+          </th>
+          <th className="govuk-table__header" scope="col">
+            Size
+          </th>
+        </tr>
+      </thead>
+      <tbody className="govuk-table__body">
+        {fileUpdate.map(file => {
           return (
-            <div id="fileInformation" key={uuid4()}>
-              <span>{info.file.name}</span>
-              <span>{!info.checksum || "done ✔"}</span>
-              <span>{info.path}</span>
-              <span>{info.size}</span>
-            </div>
+            <tr className="govuk-table__row" key={file.id}>
+              <td className="govuk-table__cell">{file.file.name}</td>
+              <td className="govuk-table__cell">
+                {!file.checksum || "done ✔"}
+              </td>
+              <td className="govuk-table__cell">{file.path}</td>
+              <td className="govuk-table__cell">{file.size}</td>
+            </tr>
           );
         })}
-      </div>
-    </>
+      </tbody>
+    </table>
   );
 };
 
