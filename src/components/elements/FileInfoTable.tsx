@@ -1,6 +1,6 @@
 import * as React from "react";
 import uuid4 from "uuid";
-import { IUpdateFile } from "./Upload";
+import { IUpdateFile } from "../pages/Upload";
 
 interface IFileInfoTableProps {
   fileUpdate: IUpdateFile[];

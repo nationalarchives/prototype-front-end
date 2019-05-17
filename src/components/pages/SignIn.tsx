@@ -1,5 +1,5 @@
 import * as React from "react";
-import { UpdateFields, getUserPool, getCurrentUser } from "../utils";
+import { UpdateFields, getUserPool } from "../../utils";
 import {
   IAuthenticationDetailsData,
   AuthenticationDetails,
@@ -7,10 +7,12 @@ import {
   ICognitoUserData,
   CognitoUser
 } from "amazon-cognito-identity-js";
-import { Header } from "./Header";
 import { RouteComponentProps } from "react-router";
 import AWS from "aws-sdk";
-import { getIdentityPoolId, getCognitoLoginId } from "../utils/user";
+import { getIdentityPoolId, getCognitoLoginId } from "../../utils/user";
+import { Page } from "./Page";
+import { TextInput, TextInputWidth } from "../elements/TextInput";
+import { Button } from "../elements/Button";
 
 const SignIn: React.FunctionComponent<RouteComponentProps> = props => {
   const [username, setUsername]: [
@@ -64,24 +66,26 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = props => {
 
   return (
     <>
-      <Header signedIn={getCurrentUser() !== null} {...props} />
-      <div id="signin">
-        <input
-          id="username"
-          value={username}
-          onChange={updateUsername}
-          type="text"
-          placeholder="username"
-        />
-        <input
-          id="password"
-          value={password}
-          onChange={updatePassword}
-          type="password"
-          placeholder="password"
-        />
-        <button onClick={signIn}>Sign in</button>
-      </div>
+      <Page title="Sign In">
+        <fieldset className="govuk-fieldset">
+          <TextInput
+            value={username}
+            onChange={updateUsername}
+            id="username"
+            labelText="Username"
+            width={TextInputWidth.Quarter}
+          />
+          <TextInput
+            value={password}
+            onChange={updatePassword}
+            id="password"
+            labelText="Password"
+            width={TextInputWidth.Quarter}
+            type="password"
+          />
+          <Button text="Sign In" onClick={signIn} />
+        </fieldset>
+      </Page>
     </>
   );
 };
