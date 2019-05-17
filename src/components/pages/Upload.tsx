@@ -64,7 +64,6 @@ const Upload: React.FunctionComponent<
         if (result) {
           if (AWS.config.credentials instanceof Credentials) {
             AWS.config.credentials.get(function() {
-              console.log("here");
               fileUpdate.forEach(update => {
                 s3.upload(
                   {
