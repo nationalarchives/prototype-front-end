@@ -1,9 +1,7 @@
 import * as React from "react";
-import { generateHash } from "../../utils";
-import { IFileInfo, IWebkitEntry, IReader } from "../../utils/files";
+import { IWebkitEntry } from "../../utils/files";
 import { IUpdateFile } from "../pages/Upload";
-import uuid4 from "uuid";
-import { Page } from "../pages/Page";
+import { useGetFileInfo } from "../../hooks/useGetFileInfo";
 
 interface IFileUploadAreaProps {
   onFilesProcessed: (fileInfo: IUpdateFile[]) => void;
@@ -16,74 +14,10 @@ const FileUploadArea: React.FunctionComponent<IFileUploadAreaProps> = props => {
     React.Dispatch<IWebkitEntry[]>
   ] = React.useState<IWebkitEntry[]>([]);
 
-  // eslint-disable-next-line
-  React.useEffect(() => {
-    async function getFiles() {
-      if (dataTransferItems.length !== 0) {
-        let allFileInfo: IFileInfo[] = [];
-        for (const item of dataTransferItems) {
-          const allFiles: IFileInfo[] = await getAllFiles(item, []);
-          allFileInfo = allFileInfo.concat(allFiles);
-        }
-
-        const updateFiles: IUpdateFile[] = allFileInfo.map(fileInfo => ({
-          id: uuid4(),
-          checksum: fileInfo.shaHash,
-          size: fileInfo.file.size.toString(),
-          path: fileInfo.entry.fullPath,
-          lastModifiedDate: fileInfo.file.lastModified.toString(),
-          file: fileInfo.file
-        }));
-        props.onFilesProcessed(updateFiles);
-        props.setIsLoading(false);
-      }
-    }
-    getFiles();
-    setDataTransferItems([]);
-  });
-
   const [isDragging, setIsDragging]: [
     boolean,
     React.Dispatch<boolean>
   ] = React.useState<boolean>(false);
-
-  const getFileFromEntry: (entry: IWebkitEntry) => Promise<File> = entry => {
-    return new Promise<File>(resolve => {
-      entry.file(f => {
-        resolve(f);
-      });
-    });
-  };
-
-  const getEntriesFromReader: (
-    reader: IReader
-  ) => Promise<IWebkitEntry[]> = reader => {
-    return new Promise<IWebkitEntry[]>(resolve => {
-      reader.readEntries(entries => {
-        resolve(entries);
-      });
-    });
-  };
-
-  const getAllFiles: (
-    entry: IWebkitEntry,
-    fileInfoInput: IFileInfo[]
-  ) => Promise<IFileInfo[]> = async (entry, fileInfoInput) => {
-    const reader: IReader = entry.createReader();
-    const entries: IWebkitEntry[] = await getEntriesFromReader(reader);
-    for (const entry of entries) {
-      if (entry.isDirectory) {
-        await getAllFiles(entry, fileInfoInput);
-      } else {
-        fileInfoInput.push({
-          entry: entry,
-          file: await getFileFromEntry(entry),
-          shaHash: await generateHash(await getFileFromEntry(entry))
-        });
-      }
-    }
-    return fileInfoInput;
-  };
 
   const onDrop: (event: React.DragEvent<HTMLDivElement>) => void = event => {
     event.preventDefault();
@@ -111,20 +45,17 @@ const FileUploadArea: React.FunctionComponent<IFileUploadAreaProps> = props => {
   const onDragLeave: () => void = () => {
     setIsDragging(false);
   };
+  const files: IUpdateFile[] = useGetFileInfo(dataTransferItems);
+  if (files.length > 0) {
+    props.onFilesProcessed(files);
+  }
 
   return (
     <div
-      id="fileDrop"
+      className={`govuk-file-drop${isDragging ? "-drag" : ""}`}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        height: "100px",
-        marginBottom: "15px",
-        backgroundColor: isDragging ? "#bfc1c3" : "#6f777b"
-      }}
     >
       Drop files ...
     </div>
