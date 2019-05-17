@@ -1,9 +1,9 @@
 import React from "react";
-import "./App.css";
+import "./Gov.css";
 import { getCurrentUser } from "./utils";
-import { SignIn } from "./components/SignIn";
-import { Upload } from "./components/Upload";
-import { CreateCollection } from "./components/CreateCollection";
+import { SignIn } from "./components/pages/SignIn";
+import { Upload } from "./components/pages/Upload";
+import { CreateCollection } from "./components/pages/CreateCollection";
 import {
   BrowserRouter as Router,
   Route,
@@ -44,6 +44,12 @@ const client = new ApolloClient({
 });
 
 const App: React.FunctionComponent = () => {
+  document.body.classList.add("govuk-template__body");
+  document.body.classList.add("app-body-class");
+  if (document.body.parentElement !== null) {
+    document.body.parentElement.classList.add("govuk-template");
+    document.body.parentElement.classList.add("app-html-class");
+  }
   const PrivateRoute: React.FunctionComponent<IPrivateRouteProps> = ({
     component: Component,
     ...rest

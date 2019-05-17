@@ -1,8 +1,9 @@
 import * as React from "react";
-import { generateHash } from "../utils";
-import { IFileInfo, IWebkitEntry, IReader } from "../utils/files";
-import { IUpdateFile } from "./Upload";
+import { generateHash } from "../../utils";
+import { IFileInfo, IWebkitEntry, IReader } from "../../utils/files";
+import { IUpdateFile } from "../pages/Upload";
 import uuid4 from "uuid";
+import { Page } from "../pages/Page";
 
 interface IFileUploadAreaProps {
   onFilesProcessed: (fileInfo: IUpdateFile[]) => void;
@@ -117,7 +118,13 @@ const FileUploadArea: React.FunctionComponent<IFileUploadAreaProps> = props => {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
-      style={{ backgroundColor: isDragging ? "lightgrey" : "grey" }}
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        height: "100px",
+        marginBottom: "15px",
+        backgroundColor: isDragging ? "#bfc1c3" : "#6f777b"
+      }}
     >
       Drop files ...
     </div>

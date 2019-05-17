@@ -1,13 +1,14 @@
 import * as React from "react";
 import AWS, { Credentials } from "aws-sdk";
-import { getCurrentUser } from "../utils";
-import { Header } from "./Header";
-import { FileUploadArea } from "./FileUploadArea";
-import { FileInfoTable } from "./FileInfoTable";
+import { getCurrentUser } from "../../utils";
+import { FileUploadArea } from "../elements/FileUploadArea";
+import { FileInfoTable } from "../elements/FileInfoTable";
 import { RouteComponentProps } from "react-router";
 import { Mutation, MutationFn } from "react-apollo";
 import gql from "graphql-tag";
 import { CognitoUser } from "amazon-cognito-identity-js";
+import { Page } from "./Page";
+import { Button } from "../elements/Button";
 
 interface IUploadProps {
   id?: string;
@@ -110,25 +111,28 @@ const Upload: React.FunctionComponent<
   };
 
   return (
-    <Mutation<{}, IUpdateFileInput> mutation={UPDATE_FILES_ON_COLLECTION}>
-      {updateFilesOnCollection => (
-        <div>
-          <Header
-            signedIn={getCurrentUser() !== null}
-            text={"Upload"}
-            {...props}
-          />
-          <FileInfoTable fileUpdate={fileUpdate} isLoading={isLoading} />
-          <FileUploadArea
-            onFilesProcessed={onFilesProcessed}
-            setIsLoading={setIsLoading}
-          />
-          <button onClick={() => onUpload(updateFilesOnCollection)}>
-            Upload
-          </button>
-        </div>
-      )}
-    </Mutation>
+    <Page title="Upload file">
+      <Mutation<{}, IUpdateFileInput> mutation={UPDATE_FILES_ON_COLLECTION}>
+        {updateFilesOnCollection => (
+          <>
+            <div className="govuk-grid-row">
+              <FileInfoTable fileUpdate={fileUpdate} isLoading={isLoading} />
+              <FileUploadArea
+                onFilesProcessed={onFilesProcessed}
+                setIsLoading={setIsLoading}
+              />
+            </div>
+
+            <div className="govuk-grid-row">
+              <Button
+                text="Upload"
+                onClick={() => onUpload(updateFilesOnCollection)}
+              />
+            </div>
+          </>
+        )}
+      </Mutation>
+    </Page>
   );
 };
 
