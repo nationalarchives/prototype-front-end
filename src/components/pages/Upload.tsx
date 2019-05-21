@@ -54,9 +54,9 @@ const Upload: React.FunctionComponent<
   };
 
   const upload: () => void = () => {
-    var albumBucketName = "tna-tdr-files";
+    var Bucket = "tdr-files";
     var s3: AWS.S3 = new AWS.S3({
-      params: { Bucket: albumBucketName }
+      params: { Bucket }
     });
     const cognitoUser: CognitoUser | null = getCurrentUser();
     if (cognitoUser !== null) {
@@ -67,9 +67,9 @@ const Upload: React.FunctionComponent<
               fileUpdate.forEach(update => {
                 s3.upload(
                   {
-                    Key: update.id,
+                    Key: `${props.match.params.id}/${update.id}`,
                     Body: update.file,
-                    Bucket: "tna-tdr-files"
+                    Bucket
                   },
                   {},
                   function(err: any) {
