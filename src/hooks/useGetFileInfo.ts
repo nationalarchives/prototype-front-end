@@ -62,7 +62,8 @@ function useGetFileInfo(dataItems: IWebkitEntry[]) {
         size: fileInfo.file.size.toString(),
         path: fileInfo.entry.fullPath,
         lastModifiedDate: fileInfo.file.lastModified.toString(),
-        file: fileInfo.file
+        file: fileInfo.file,
+        fileName: fileInfo.file.name
       }));
       setFileInfo(updateFiles);
     };

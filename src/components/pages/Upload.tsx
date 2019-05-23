@@ -20,6 +20,7 @@ interface IUpdateFileInfo {
   size: string;
   path: string;
   lastModifiedDate: string;
+  fileName: string;
 }
 
 export interface IUpdateFile extends IUpdateFileInfo {

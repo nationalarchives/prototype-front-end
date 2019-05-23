@@ -24,6 +24,7 @@ export const getAuthorisationToken: () => Promise<string> = () => {
     if (user !== null) {
       user.getSession(function(_: any, result: any) {
         if (result) {
+          console.log(result.idToken.jwtToken);
           resolve(result.idToken.jwtToken);
         }
       });
