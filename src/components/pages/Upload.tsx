@@ -111,7 +111,7 @@ const Upload: React.FunctionComponent<
   };
 
   return (
-    <Page title="Upload file">
+    <Page title="Upload file" path={props.location.pathname}>
       <Mutation<{}, IUpdateFileInput> mutation={UPDATE_FILES_ON_COLLECTION}>
         {updateFilesOnCollection => (
           <>

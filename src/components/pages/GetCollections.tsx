@@ -14,7 +14,7 @@ interface ICollectionQueryVariables {
   limit: number;
 }
 
-const GetCollections: React.FunctionComponent<RouteComponentProps> = () => {
+const GetCollections: React.FunctionComponent<RouteComponentProps> = props => {
   const GET_COLLECTION = gql`
     query GetCollections($offset: Int, $limit: Int) {
       getCollections(offset: $offset, limit: $limit) {
@@ -28,7 +28,7 @@ const GetCollections: React.FunctionComponent<RouteComponentProps> = () => {
   `;
 
   return (
-    <Page title="View Collections">
+    <Page title="View Collections" path={props.location.pathname}>
       <Query<ICollectionQueryDataProps, ICollectionQueryVariables>
         query={GET_COLLECTION}
         variables={{ offset: 0, limit: 1 }}

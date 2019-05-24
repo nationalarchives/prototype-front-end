@@ -43,7 +43,7 @@ const ViewFiles: React.FunctionComponent<
   RouteComponentProps<IViewFilesProps>
 > = props => {
   return (
-    <Page title="View files">
+    <Page title="View files" path={props.location.pathname}>
       <Query<IViewFilesData, IViewFilesProps>
         query={GET_FILE_STATUS}
         variables={{ collectionId: props.match.params.collectionId }}

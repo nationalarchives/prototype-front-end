@@ -75,7 +75,7 @@ const CreateCollection: React.FunctionComponent<
   };
 
   return (
-    <Page title="Create Collection">
+    <Page title="Create Collection" path={props.location.pathname}>
       <Mutation<ICreateCollectionResponse, ICreateCollection>
         mutation={CREATE_COLLECTION}
       >

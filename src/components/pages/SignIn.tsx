@@ -84,7 +84,7 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = props => {
 
   return (
     <>
-      <Page title="Sign In">
+      <Page title="Sign In" path={props.location.pathname}>
         <div
           className={`govuk-form-group ${
             error.length > 0 ? "govuk-form-group--error" : ""

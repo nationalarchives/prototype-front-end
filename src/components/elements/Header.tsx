@@ -1,6 +1,10 @@
 import * as React from "react";
 
-const Header: React.FunctionComponent = () => {
+interface IHeaderComponent {
+  path: string;
+}
+
+const Header: React.FunctionComponent<IHeaderComponent> = props => {
   return (
     <header className="govuk-header " role="banner" data-module="header">
       <div className="govuk-header__container govuk-width-container">
@@ -42,7 +46,41 @@ const Header: React.FunctionComponent = () => {
           >
             Transfer Digital Records
           </a>
-
+          <button
+            type="button"
+            role="button"
+            className="govuk-header__menu-button js-header-toggle"
+            aria-controls="navigation"
+            aria-label="Show or hide Top Level Navigation"
+          >
+            Menu
+          </button>
+          <nav>
+            <ul
+              id="navigation"
+              className="govuk-header__navigation "
+              aria-label="Top Level Navigation"
+            >
+              <li
+                className={`govuk-header__navigation-item govuk-header__navigation-item${
+                  props.path === "/get-collections" ? "--active" : ""
+                }`}
+              >
+                <a className="govuk-header__link" href="/get-collections">
+                  View Collections
+                </a>
+              </li>
+              <li
+                className={`govuk-header__navigation-item${
+                  props.path === "/create-collection" ? "--active" : ""
+                }`}
+              >
+                <a className="govuk-header__link" href="/create-collection">
+                  Create Collection
+                </a>
+              </li>
+            </ul>
+          </nav>
           <button
             type="button"
             className="govuk-header__menu-button js-header-toggle"
