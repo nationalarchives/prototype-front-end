@@ -83,6 +83,7 @@ const App: React.FunctionComponent = () => {
         <PrivateRoute path="/create-collection" component={CreateCollection} />
         <PrivateRoute path="/upload/:id" component={Upload} />
         <PrivateRoute path="/get-collections" component={GetCollections} />
+        <PrivateRoute path="/files/:collectionId" component={ViewFiles} />
       </Router>
     </div>
   );
