@@ -82,6 +82,7 @@ const App: React.FunctionComponent = () => {
         <Route path="/signin" component={SignIn} />
         <PrivateRoute path="/create-collection" component={CreateCollection} />
         <PrivateRoute path="/upload/:id" component={Upload} />
+        <PrivateRoute path="/get-collections" component={GetCollections} />
       </Router>
     </div>
   );
