@@ -28,7 +28,7 @@ interface IPrivateRouteProps extends RouteProps {
 }
 
 const httpLink: ApolloLink = createHttpLink({
-  uri: "https://hudcqpobs7.execute-api.eu-west-2.amazonaws.com/dev/graphql"
+  uri: "https://m6t2cgd8uc.execute-api.eu-west-2.amazonaws.com/dev/graphql"
 });
 
 const authLink: ApolloLink = setContext(async (_, { headers }) => {
