@@ -9,6 +9,7 @@ import gql from "graphql-tag";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { Page } from "./Page";
 import { Button } from "../elements/Button";
+import { getCognitoLoginId, getIdentityPoolId } from "../../utils/user";
 
 interface IUploadProps {
   id?: string;
@@ -63,6 +64,17 @@ const Upload: React.FunctionComponent<
     if (cognitoUser !== null) {
       cognitoUser.getSession(function(err: any, result: any) {
         if (result) {
+          if (AWS.config.credentials === null) {
+            const IdentityPoolId = getIdentityPoolId();
+            const cognitoLoginId = getCognitoLoginId();
+            AWS.config.region = "eu-west-2";
+            AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+              IdentityPoolId: IdentityPoolId,
+              Logins: {
+                [cognitoLoginId]: result.getIdToken().getJwtToken()
+              }
+            });
+          }
           if (AWS.config.credentials instanceof Credentials) {
             AWS.config.credentials.get(function() {
               fileUpdate.forEach(update => {
