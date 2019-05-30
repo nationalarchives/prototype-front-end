@@ -47,7 +47,6 @@ const GetCollections: React.FunctionComponent<RouteComponentProps> = props => {
                       limit: 2
                     },
                     updateQuery: (prev, { fetchMoreResult }) => {
-                      console.log(fetchMoreResult);
                       if (
                         !fetchMoreResult ||
                         (fetchMoreResult &&

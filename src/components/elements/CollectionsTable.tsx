@@ -58,9 +58,7 @@ const CollectionsTable: React.FunctionComponent<
               <td className="govuk-table__cell">{collection.copyright}</td>
               <td className="govuk-table__cell">{collection.legalStatus}</td>
               <td className="govuk-table__cell">
-                <Link to={`/files?collectionId=${collection.id}`}>
-                  View Files
-                </Link>
+                <Link to={`/files/${collection.id}`}>View Files</Link>
               </td>
             </tr>
           );

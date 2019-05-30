@@ -22,12 +22,12 @@ interface IViewFiles {
 }
 
 interface IViewFilesData {
-  getFileStatus: IViewFiles;
+  getFilesStatus: IViewFiles;
 }
 
-const GET_FILE_STATUS = gql`
-  query GetFileStatus($collectionId: ID) {
-    getFileStatus(collectionId: $collectionId) {
+const GET_FILES_STATUS = gql`
+  query GetFilesStatus($collectionId: ID!) {
+    getFilesStatus(collectionId: $collectionId) {
       name
       files {
         fileName
@@ -45,7 +45,7 @@ const ViewFiles: React.FunctionComponent<
   return (
     <Page title="View files" path={props.location.pathname}>
       <Query<IViewFilesData, IViewFilesProps>
-        query={GET_FILE_STATUS}
+        query={GET_FILES_STATUS}
         variables={{ collectionId: props.match.params.collectionId }}
       >
         {({ loading, error, data }) => {
@@ -54,10 +54,10 @@ const ViewFiles: React.FunctionComponent<
           if (data)
             return (
               <>
-                <h1 className="app-task-list">{data.getFileStatus.name}</h1>
-                {data.getFileStatus.files.map(file => {
+                <h1 className="app-task-list">{data.getFilesStatus.name}</h1>
+                {data.getFilesStatus.files.map(file => {
                   return (
-                    <ol className="appTaskList">
+                    <ol className="app-task-list">
                       <li>
                         <h2 className="app-task-list__section">
                           {file.fileName}
