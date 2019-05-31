@@ -47,6 +47,10 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react": "^8.0.1",
     "prettier": "1.17.0"
+  },
+  "resolutions": {
+    "babel-jest": "24.7.1"
   }
 }
