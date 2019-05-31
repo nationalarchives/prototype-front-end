@@ -10,6 +10,12 @@ pipeline {
                 checkout(scm)
             }
         }
+        
+        stage('Install') {
+            steps {
+                sh('yarn')
+            }
+        }
 
         stage('Run checks') {
             steps {
