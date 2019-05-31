@@ -55,16 +55,12 @@ const Upload: React.FunctionComponent<
     }
   };
 
-  const upload: () => void = () => {
-    var Bucket = "tdr-files";
-    var s3: AWS.S3 = new AWS.S3({
-      params: { Bucket }
-    });
-    const cognitoUser: CognitoUser | null = getCurrentUser();
-    if (cognitoUser !== null) {
-      cognitoUser.getSession(function(err: any, result: any) {
-        if (result) {
-          if (AWS.config.credentials === null) {
+  const getCredentials: () => Promise<void> = async () => {
+    return new Promise<void>((resolve, reject) => {
+      const cognitoUser: CognitoUser | null = getCurrentUser();
+      if (cognitoUser !== null) {
+        cognitoUser.getSession(function(err: any, result: any) {
+          if (result) {
             const IdentityPoolId = getIdentityPoolId();
             const cognitoLoginId = getCognitoLoginId();
             AWS.config.region = "eu-west-2";
@@ -74,27 +70,41 @@ const Upload: React.FunctionComponent<
                 [cognitoLoginId]: result.getIdToken().getJwtToken()
               }
             });
-          }
-          if (AWS.config.credentials instanceof Credentials) {
-            AWS.config.credentials.get(function() {
-              fileUpdate.forEach(update => {
-                s3.upload(
-                  {
-                    Key: `${props.match.params.id}/${update.id}`,
-                    Body: update.file,
-                    Bucket
-                  },
-                  {},
-                  function(err: any) {
-                    console.log(err);
-                  }
-                );
-              });
+            AWS.config.getCredentials(function(err: any) {
+              if (err === undefined || err === null) {
+                resolve();
+              } else {
+                reject(err.code);
+              }
             });
           }
+        });
+      }
+    });
+    return new Promise<void>((resolve, reject) => {});
+  };
+
+  const upload: () => void = async () => {
+    var Bucket = "tdr-files";
+    await getCredentials();
+    var s3: AWS.S3 = new AWS.S3({
+      params: {
+        Bucket
+      }
+    });
+    fileUpdate.forEach(update => {
+      s3.upload(
+        {
+          Key: `${props.match.params.id}/${update.id}`,
+          Body: update.file,
+          Bucket
+        },
+        {},
+        function(err: any) {
+          console.log(err);
         }
-      });
-    }
+      );
+    });
   };
 
   const UPDATE_FILES_ON_COLLECTION = gql`
