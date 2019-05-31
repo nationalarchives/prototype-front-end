@@ -20,7 +20,7 @@ pipeline {
         stage('Run checks') {
             steps {
                 sh('yarn audit')
-                sh('yarn test')
+                sh('yarn test:ci')
             }
         }
     }
