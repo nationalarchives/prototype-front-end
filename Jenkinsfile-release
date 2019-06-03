@@ -1,8 +1,6 @@
 pipeline {
     agent {
-        docker {
-            image 'node:12-alpine'
-        }
+        dockerfile true 
     }
     stages {
         stage('Checkout') {
@@ -20,6 +18,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh('yarn version --patch')
+                withCredentials([usernamePassword(credentialsId: 'TDRGithub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh 'git push https://$USERNAME:$PASSWORD@github.com/nationalarchives/tdr-front-end.git master'
+                }
                 sh('yarn deploy')
             }
         }
