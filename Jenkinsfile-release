@@ -1,0 +1,27 @@
+pipeline {
+    agent {
+        docker {
+            image 'node:12-alpine'
+        }
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout(scm)
+            }
+        }
+        
+        stage('Install') {
+            steps {
+                sh('yarn')
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh('yarn version --patch')
+                sh('yarn deploy')
+            }
+        }
+    }
+}
