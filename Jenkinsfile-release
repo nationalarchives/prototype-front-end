@@ -19,10 +19,10 @@ pipeline {
             steps {
                 sh 'git config user.name "Sam Palmer"'
                 sh 'git config user.email "github@sampalmer.dev"'
+                sh 'git checkout master'
                 sh('yarn version --patch')
 
                 withCredentials([usernamePassword(credentialsId: 'TDRGithub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh 'git remote add origin https://github.com/nationalarchives/tdr-front-end.git'
                     sh 'git push https://$USERNAME:$PASSWORD@github.com/nationalarchives/tdr-front-end.git master'
                 }
                 sh('yarn deploy')
