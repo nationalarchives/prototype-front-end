@@ -12,7 +12,7 @@ This is an overview of the project as a whole. The other components are
 
 ## Architecture
 
-![TDR Architecture Diagram](https://s3.eu-west-2.amazonaws.com/tdr-front-end/TDR.png)
+![TDR Architecture Diagram](https://github.com/nationalarchives/tdr-front-end/blob/master/public/tdr.png)
 
 ## Main flow
 
