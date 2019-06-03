@@ -26,6 +26,7 @@ pipeline {
                     usernamePassword(credentialsId: 'TDRGithub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD'),
                     usernamePassword(credentialsId: 'TDRAWS', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')
                     ]) {
+                    sh 'serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY'
                     sh 'git push https://$USERNAME:$PASSWORD@github.com/nationalarchives/tdr-front-end.git master'
                     sh('yarn deploy')
                 }
