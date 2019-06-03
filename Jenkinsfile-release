@@ -17,10 +17,11 @@ pipeline {
 
         stage('Deploy') {
             steps {
+                sh 'git config user.name "Sam Palmer"'
+                sh 'git config user.email "github@sampalmer.dev"'
                 sh('yarn version --patch')
+
                 withCredentials([usernamePassword(credentialsId: 'TDRGithub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh 'git config user.name "Sam Palmer"'
-                    sh 'git config user.email "github@sampalmer.dev"'
                     sh 'git push https://$USERNAME:$PASSWORD@github.com/nationalarchives/tdr-front-end.git master'
                 }
                 sh('yarn deploy')
