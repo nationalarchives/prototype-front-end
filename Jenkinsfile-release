@@ -22,10 +22,13 @@ pipeline {
                 sh 'git checkout master'
                 sh('yarn version --patch')
 
-                withCredentials([usernamePassword(credentialsId: 'TDRGithub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([
+                    usernamePassword(credentialsId: 'TDRGithub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')
+                    usernamePassword(credentialsId: 'TDRAWS', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')
+                    ]) {
                     sh 'git push https://$USERNAME:$PASSWORD@github.com/nationalarchives/tdr-front-end.git master'
+                    sh('yarn deploy')
                 }
-                sh('yarn deploy')
             }
         }
     }
