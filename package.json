@@ -1,14 +1,8 @@
 {
   "name": "tdr-front-end",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
-    "@types/jest": "24.0.12",
-    "@types/node": "12.0.0",
-    "@types/react": "16.8.17",
-    "@types/react-dom": "16.8.4",
-    "@types/react-router-dom": "^4.3.3",
-    "@types/uuid": "^3.4.4",
     "amazon-cognito-identity-js": "^3.0.12",
     "apollo-boost": "^0.3.1",
     "apollo-link": "^1.2.11",
@@ -18,10 +12,7 @@
     "react": "^16.8.6",
     "react-apollo": "^2.5.5",
     "react-dom": "^16.8.6",
-    "react-file-drop": "^0.2.8",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.0",
-    "typescript": "3.4.5",
     "uuid4": "^1.1.4"
   },
   "scripts": {
@@ -29,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:ci": "CI=true react-scripts test",
-    "deploy": "aws s3 sync ./build s3://tdr-front-end",
+    "deploy": "react-scripts build && sls deploy",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -49,7 +40,16 @@
   },
   "devDependencies": {
     "@testing-library/react": "^8.0.1",
-    "prettier": "1.17.0"
+    "@types/jest": "24.0.12",
+    "@types/node": "12.0.0",
+    "@types/react": "16.8.17",
+    "@types/react-dom": "16.8.4",
+    "@types/react-router-dom": "^4.3.3",
+    "@types/uuid": "^3.4.4",
+    "prettier": "1.17.0",
+    "react-scripts": "3.0.0",
+    "serverless-s3-sync": "^1.8.0",
+    "typescript": "3.4.5"
   },
   "resolutions": {
     "babel-jest": "24.7.1"
