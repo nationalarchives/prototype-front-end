@@ -10,7 +10,7 @@ const Header: React.FunctionComponent<IHeaderComponent> = props => {
       <div className="govuk-header__container govuk-width-container">
         <div className="govuk-header__logo">
           <a
-            href="http://localhost:3000/"
+            href="https://d25oh1q2xkwz8z.cloudfront.net//"
             className="govuk-header__link govuk-header__link--homepage"
           >
             <span className="govuk-header__logotype">
@@ -41,7 +41,7 @@ const Header: React.FunctionComponent<IHeaderComponent> = props => {
         </div>
         <div className="govuk-header__content">
           <a
-            href="http://localhost:3000"
+            href="https://d25oh1q2xkwz8z.cloudfront.net/"
             className="govuk-header__link govuk-header__link--service-name"
           >
             Transfer Digital Records
