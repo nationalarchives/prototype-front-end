@@ -20,12 +20,13 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Version and deploy') {
             steps {
                 sh 'git config user.name "Sam Palmer"'
                 sh 'git config user.email "github@sampalmer.dev"'
                 sh 'git checkout master'
-                sh("yarn version --${VERSION}")
+                sh 'git pull'
+                sh("yarn version --${params.VERSION}")
 
                 withCredentials([
                     usernamePassword(credentialsId: 'TDRGithub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD'),
