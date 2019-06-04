@@ -4,6 +4,9 @@ pipeline {
             args '-u root:root'
         }
     }
+    parameters {
+         choice(name: 'VERSION', choices: ['patch', 'major', 'minor'], description: 'Semver version')
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -22,7 +25,7 @@ pipeline {
                 sh 'git config user.name "Sam Palmer"'
                 sh 'git config user.email "github@sampalmer.dev"'
                 sh 'git checkout master'
-                sh('yarn version --patch')
+                sh("yarn version --${VERSION}")
 
                 withCredentials([
                     usernamePassword(credentialsId: 'TDRGithub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD'),
