@@ -35,6 +35,8 @@ pipeline {
                     sh 'node_modules/.bin/serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY'
                     sh 'git push --follow-tags https://$USERNAME:$PASSWORD@github.com/nationalarchives/tdr-front-end.git master'
                     sh('yarn deploy')
+                    version = sh(script: "grep version package.json | head -1 | awk -F\\\" '{print \$4}'", returnStdout: true)
+                    echo version
                 }
             }
         }
