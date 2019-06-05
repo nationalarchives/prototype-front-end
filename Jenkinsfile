@@ -24,4 +24,9 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            junit 'junit.xml'
+        }
+    }
 }
