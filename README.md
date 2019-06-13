@@ -20,10 +20,8 @@ This is an overview of the project as a whole. The other components are
 2. This sends a mutation to the GraphQL server running as a lambda function which creates an entry in a table on the RDS database.
 3. The user then chooses which files to upload ([Upload.tsx](https://github.com/nationalarchives/tdr-front-end/blob/master/src/components/pages/Upload.tsx))
 4. This runs another mutation to store the files and some metadata in the RDS database. A temporary token is retrieved from the cognito user and used to upload the files to the S3 bucket.
-5. There is an event notification on the S3 bucket which will trigger a lambda when there is a put event. This [lambda](https://github.com/nationalarchives/tdr-aws/blob/master/tdr-run-tasks.py) does two things.
-
-   - Sends the put event to an SQS queue
-   - Starts a task defined in ECS
-
-6. This task runs three containers. One is a virus checking service, one is a file type checking service and the last is the code which runs the checks. This code picks up the message from the SQS queue, downloads the file using the client credentials flow through cognito and runs the checks against it. Once the checks are done, it updates the database, via the GraphQL lambda.
-7. The front end can then poll the rds datbase via the GraphQL lambda to display the results of the checks carried out by the ECS containers.
+5. There is an event notification on the S3 bucket which will trigger a step function.
+6. This step function runs three ECS tasks in parallel, one for the virus checker, one for the file format check and one for the checksum check. The containers are defined in this [repository](https://github.com/nationalarchives/prototype-state-machine)
+7. Once the tasks are run, the outputs are sent to separate SNS topics
+8. There is a lambda which subscribes to these topics, picks up the output and sends the results to the graphql server, which updates the database. The lambda is defined [here](https://github.com/nationalarchives/prototype-topic-listeners)
+9. The front end can then poll the rds datbase via the GraphQL lambda to display the results of the checks carried out by the ECS containers.
